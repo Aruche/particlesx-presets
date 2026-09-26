@@ -4,6 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ParticlesX &mdash; User Manual</title>
+<meta name="description" content="The ParticlesX user manual for Construct 3: every property, action, condition and trigger of the batched particle emitter.">
+<link rel="canonical" href="https://aruche.github.io/particlesx-presets/manual/">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-256.png" sizes="256x256" type="image/png">
+<link rel="apple-touch-icon" href="icon-256.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ParticlesX">
+<meta property="og:title" content="ParticlesX &mdash; User Manual">
+<meta property="og:description" content="The ParticlesX user manual for Construct 3: every property, action, condition and trigger of the batched particle emitter.">
+<meta property="og:url" content="https://aruche.github.io/particlesx-presets/manual/">
+<meta property="og:image" content="https://aruche.github.io/particlesx-presets/share-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aruche.github.io/particlesx-presets/share-card.png">
 <style>
 /* ParticlesX manual theme, in the spirit of Construct's addon SDK manual:
    light panels, a soft blue accent and roomy tables. */
@@ -227,6 +240,15 @@ a:hover
 	font-size: 0.86rem;
 	color: var(--muted);
 	padding: 4px 9px;
+}
+
+/* The second title in the sidebar keeps the manual's own contents apart from
+   the link out to the preset catalogue. */
+.sidebar-more
+{
+	margin-top: 24px;
+	padding-top: 16px;
+	border-top: 1px solid var(--line-soft);
 }
 
 /* ---------------------------------------------------------------- content */
@@ -581,6 +603,10 @@ td code
 				</ul></li>
 				<li class="nav-section"><a href="#things-to-watch-out-for">Things to watch out for</a><ul>
 				</ul></li>
+			</ul>
+			<p class="sidebar-title sidebar-more">Elsewhere</p>
+			<ul class="nav-list">
+				<li><a href="https://aruche.github.io/particlesx-presets/">Preset catalogue</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -1122,7 +1148,7 @@ td code
 <footer class="site-footer">
 	<div class="footer-inner">
 		<p>ParticlesX &mdash; a batched particle emitter for Construct 3.</p>
-		<p><a href="#top">Back to top</a></p>
+		<p><a href="https://aruche.github.io/particlesx-presets/">Preset catalogue</a> &middot; <a href="#top">Back to top</a></p>
 	</div>
 </footer>
 
@@ -1148,7 +1174,7 @@ td code
 
 	// Highlights the section being read, and only while it is on screen.
 	const links = new Map();
-	for (const link of document.querySelectorAll(".nav-list a"))
+	for (const link of document.querySelectorAll(".nav-list a[href^='#']"))
 		links.set(link.getAttribute("href").slice(1), link);
 
 	const headings = [...document.querySelectorAll("main h2, main h3")];
