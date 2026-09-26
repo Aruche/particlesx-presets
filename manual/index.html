@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParticlesX &mdash; User Manual</title>
+<style>
+/* ParticlesX manual theme, in the spirit of Construct's addon SDK manual:
+   light panels, a soft blue accent and roomy tables. */
+
+:root
+{
+	--ink: #14303f;
+	--text: #38474f;
+	--muted: #6d7d88;
+	--blue: #0d7fd0;
+	--blue-dark: #0a63a6;
+	--blue-soft: #e9f4fc;
+	--blue-line: #cbe3f6;
+	--bg: #eef2f5;
+	--panel: #ffffff;
+	--line: #dde5ec;
+	--line-soft: #eef3f7;
+	--code-bg: #eff4f9;
+	--code-ink: #0b5f96;
+	--header-height: 64px;
+}
+
+*
+{
+	box-sizing: border-box;
+}
+
+html
+{
+	scroll-behavior: smooth;
+}
+
+body
+{
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.65;
+	-webkit-text-size-adjust: 100%;
+}
+
+a
+{
+	color: var(--blue-dark);
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: var(--blue);
+	text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.site-header
+{
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	background: var(--panel);
+	border-bottom: 1px solid var(--line);
+	box-shadow: 0 1px 0 rgba(20, 48, 63, 0.04), 0 2px 8px rgba(20, 48, 63, 0.05);
+}
+
+.header-inner
+{
+	max-width: 1220px;
+	margin: 0 auto;
+	padding: 0 24px;
+	height: var(--header-height);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.brand
+{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	color: var(--ink);
+}
+
+.brand:hover
+{
+	text-decoration: none;
+	color: var(--ink);
+}
+
+.logo
+{
+	width: 34px;
+	height: 34px;
+	color: var(--blue);
+	flex: none;
+}
+
+.brand-text
+{
+	display: flex;
+	flex-direction: column;
+	line-height: 1.2;
+}
+
+.brand-name
+{
+	font-size: 1.15rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+
+.brand-sub
+{
+	font-size: 0.78rem;
+	color: var(--muted);
+}
+
+.nav-toggle
+{
+	display: none;
+	font: inherit;
+	font-size: 0.9rem;
+	color: var(--blue-dark);
+	background: var(--blue-soft);
+	border: 1px solid var(--blue-line);
+	border-radius: 6px;
+	padding: 7px 14px;
+	cursor: pointer;
+}
+
+.nav-toggle:hover
+{
+	background: #dcecfa;
+}
+
+/* ----------------------------------------------------------------- layout */
+
+.layout
+{
+	max-width: 1220px;
+	margin: 0 auto;
+	padding: 28px 24px 56px;
+	display: grid;
+	grid-template-columns: 244px minmax(0, 1fr);
+	gap: 32px;
+	align-items: start;
+}
+
+.sidebar
+{
+	position: sticky;
+	top: calc(var(--header-height) + 20px);
+	max-height: calc(100vh - var(--header-height) - 40px);
+	overflow-y: auto;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	padding: 16px 14px;
+}
+
+.sidebar-title
+{
+	margin: 0 0 10px;
+	padding: 0 8px;
+	font-size: 0.74rem;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.nav-list,
+.nav-list ul
+{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-list a
+{
+	display: block;
+	padding: 6px 9px;
+	border-radius: 6px;
+	border-left: 3px solid transparent;
+	color: var(--text);
+	font-size: 0.92rem;
+}
+
+.nav-list a:hover
+{
+	background: var(--line-soft);
+	color: var(--blue-dark);
+	text-decoration: none;
+}
+
+.nav-list a.active
+{
+	background: var(--blue-soft);
+	border-left-color: var(--blue);
+	color: var(--blue-dark);
+	font-weight: 600;
+}
+
+.nav-list .nav-section > a
+{
+	font-weight: 600;
+	color: var(--ink);
+}
+
+.nav-list ul
+{
+	margin: 2px 0 10px 6px;
+}
+
+.nav-list ul a
+{
+	font-size: 0.86rem;
+	color: var(--muted);
+	padding: 4px 9px;
+}
+
+/* ---------------------------------------------------------------- content */
+
+.content
+{
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	padding: 8px 40px 40px;
+	min-width: 0;
+}
+
+.content > :first-child
+{
+	margin-top: 28px;
+}
+
+h2
+{
+	margin: 40px 0 14px;
+	padding-bottom: 8px;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--ink);
+	border-bottom: 2px solid var(--blue-line);
+	scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+h2::before
+{
+	content: "";
+	display: inline-block;
+	width: 4px;
+	height: 0.95em;
+	margin-right: 10px;
+	vertical-align: -0.06em;
+	border-radius: 2px;
+	background: var(--blue);
+}
+
+h3
+{
+	margin: 30px 0 10px;
+	font-size: 1.16rem;
+	font-weight: 600;
+	color: var(--ink);
+	scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+p
+{
+	margin: 0 0 14px;
+}
+
+strong
+{
+	color: var(--ink);
+}
+
+em
+{
+	font-style: italic;
+	color: var(--muted);
+}
+
+ul
+{
+	margin: 0 0 16px;
+	padding-left: 22px;
+}
+
+li
+{
+	margin: 6px 0;
+}
+
+code
+{
+	font-family: Consolas, "Cascadia Mono", Menlo, Consolas, monospace;
+	font-size: 0.88em;
+	background: var(--code-bg);
+	color: var(--code-ink);
+	border: 1px solid var(--line-soft);
+	border-radius: 4px;
+	padding: 1px 5px;
+	white-space: nowrap;
+}
+
+/* Notes, which the manual uses to call out concepts and recipes. */
+.note
+{
+	margin: 0 0 16px;
+	padding: 12px 16px;
+	background: #f6fafd;
+	border: 1px solid var(--blue-line);
+	border-left: 4px solid var(--blue);
+	border-radius: 0 8px 8px 0;
+}
+
+.note > strong:first-child
+{
+	display: inline;
+}
+
+/* ----------------------------------------------------------------- tables */
+
+table
+{
+	width: 100%;
+	margin: 0 0 20px;
+	border-collapse: collapse;
+	font-size: 0.94rem;
+	background: var(--panel);
+}
+
+th
+{
+	text-align: left;
+	vertical-align: bottom;
+	padding: 10px 12px;
+	background: #f3f7fa;
+	border-bottom: 2px solid var(--line);
+	color: var(--ink);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+td
+{
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--line-soft);
+	vertical-align: top;
+}
+
+tbody tr:nth-child(even)
+{
+	background: #fafcfe;
+}
+
+tbody tr:hover
+{
+	background: #f4f9fd;
+}
+
+td:first-child
+{
+	color: var(--ink);
+}
+
+/* Three column tables are the property tables: keep the name and default
+   columns narrow so the explanation gets the width. */
+table.cols-3 th:first-child,
+table.cols-3 td:first-child
+{
+	width: 23%;
+}
+
+table.cols-3 th:nth-child(2),
+table.cols-3 td:nth-child(2)
+{
+	width: 104px;
+	white-space: nowrap;
+}
+
+td code
+{
+	white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.site-footer
+{
+	border-top: 1px solid var(--line);
+	background: var(--panel);
+}
+
+.footer-inner
+{
+	max-width: 1220px;
+	margin: 0 auto;
+	padding: 22px 24px 30px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 8px;
+	color: var(--muted);
+	font-size: 0.88rem;
+}
+
+.footer-inner p
+{
+	margin: 0;
+}
+
+/* --------------------------------------------------------------- narrow */
+
+@media (max-width: 900px)
+{
+	.layout
+	{
+		grid-template-columns: minmax(0, 1fr);
+		padding: 20px 16px 40px;
+		gap: 0;
+	}
+
+	.nav-toggle
+	{
+		display: block;
+	}
+
+	.sidebar
+	{
+		display: none;
+		position: static;
+		max-height: none;
+		margin-bottom: 20px;
+	}
+
+	.sidebar.open
+	{
+		display: block;
+	}
+
+	.content
+	{
+		padding: 4px 20px 28px;
+	}
+
+	h2
+	{
+		font-size: 1.32rem;
+	}
+
+	table
+	{
+		font-size: 0.9rem;
+	}
+
+	th,
+	td
+	{
+		padding: 8px 10px;
+	}
+
+	th
+	{
+		white-space: normal;
+	}
+}
+
+/* -------------------------------------------------------------- printing */
+
+@media print
+{
+	.site-header,
+	.sidebar,
+	.site-footer,
+	.nav-toggle
+	{
+		display: none;
+	}
+
+	body
+	{
+		background: #ffffff;
+	}
+
+	.layout
+	{
+		display: block;
+		padding: 0;
+		max-width: none;
+	}
+
+	.content
+	{
+		border: 0;
+		padding: 0;
+	}
+
+	h2,
+	h3
+	{
+		break-after: avoid;
+	}
+
+	table
+	{
+		break-inside: avoid;
+	}
+}
+</style>
+</head>
+<body id="top">
+
+<header class="site-header">
+	<div class="header-inner">
+		<a class="brand" href="#top">
+			<svg class="logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+	<path d="M 12 7.4Q 13.8 4.1 12 0.8Q 10.2 4.1 12 7.4Z M 15.81 8.19Q 18.99 7.25 19.92 4.08Q 16.75 5.01 15.81 8.19Z M 16.6 12Q 19.9 13.8 23.2 12Q 19.9 10.2 16.6 12Z M 15.81 15.81Q 16.75 18.99 19.92 19.92Q 18.99 16.75 15.81 15.81Z M 12 16.6Q 10.2 19.9 12 23.2Q 13.8 19.9 12 16.6Z M 8.19 15.81Q 5.01 16.75 4.08 19.92Q 7.25 18.99 8.19 15.81Z M 7.4 12Q 4.1 10.2 0.8 12Q 4.1 13.8 7.4 12Z M 8.19 8.19Q 7.25 5.01 4.08 4.08Q 5.01 7.25 8.19 8.19Z"/>
+	<path d="M 15.61 9.81L 13.41 12L 15.61 14.19L 14.19 15.61L 12 13.41L 9.81 15.61L 8.39 14.19L 10.59 12L 8.39 9.81L 9.81 8.39L 12 10.59L 14.19 8.39Z"/>
+</svg>
+			<span class="brand-text">
+				<span class="brand-name">ParticlesX</span>
+				<span class="brand-sub">User manual for Construct 3</span>
+			</span>
+		</a>
+		<button class="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false">Sections</button>
+	</div>
+</header>
+
+<div class="layout">
+	<nav class="sidebar" id="sidebar" aria-label="Manual sections">
+		<div class="sidebar-inner">
+			<p class="sidebar-title">Contents</p>
+			<ul class="nav-list">
+				<li class="nav-section"><a href="#getting-started">Getting started</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#key-ideas">Key ideas</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#properties">Properties</a><ul>
+				<li><a href="#properties">Properties</a></li>
+				<li><a href="#emission">Emission</a></li>
+				<li><a href="#movement">Movement</a></li>
+				<li><a href="#tint">Tint</a></li>
+				<li><a href="#size">Size</a></li>
+				<li><a href="#opacity">Opacity</a></li>
+				<li><a href="#rotation">Rotation</a></li>
+				<li><a href="#animation">Animation</a></li>
+				<li><a href="#lifecycle">Lifecycle</a></li>
+				<li><a href="#collision">Collision</a></li>
+				<li><a href="#editor-display">Editor Display</a></li>
+				</ul></li>
+				<li class="nav-section"><a href="#actions">Actions</a><ul>
+				<li><a href="#particlesx-emitter">ParticlesX - Emitter</a></li>
+				<li><a href="#particlesx-particle">ParticlesX - Particle</a></li>
+				<li><a href="#particlesx-loops">ParticlesX - Loops</a></li>
+				<li><a href="#particlesx-collision">ParticlesX - Collision</a></li>
+				<li><a href="#particlesx-appearance">ParticlesX - Appearance</a></li>
+				</ul></li>
+				<li class="nav-section"><a href="#conditions">Conditions</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#triggers">Triggers</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#expressions">Expressions</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#recipes">Recipes</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#performance-tips">Performance tips</a><ul>
+				</ul></li>
+				<li class="nav-section"><a href="#things-to-watch-out-for">Things to watch out for</a><ul>
+				</ul></li>
+			</ul>
+		</div>
+	</nav>
+
+	<main class="content">
+<p>ParticlesX is a particle emitter for Construct 3. You give it one image, set a few properties, and it produces effects like fire, smoke, sparks, rain and explosions. All of an emitter's particles are drawn as a single batch, so you can run a lot of them without slowing the game down.</p>
+
+<p>Everything has a sensible default: drop one in a layout, set the particle image, and you already have a working effect.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<ol>
+<li>Insert <strong>ParticlesX</strong> into a layout from the General category. The object itself is invisible; you only see its particles.</li>
+<li>In the Properties bar, click <strong>Image → Edit</strong> to pick the particle image. A soft round dot works for almost everything, and <strong>Effect scale</strong> is worth knowing about early: it sizes the whole effect in one number.</li>
+<li>Set <strong>Capacity</strong>, <strong>Emission rate</strong> and <strong>Lifetime</strong> first. The rest already has usable values.</li>
+<li>In the Layout Editor, the emitter draws a small preview of where particles come from, which way they travel and how far they spread. It is a diagram, not a simulation, and it costs nothing at runtime.</li>
+<li>Press Preview to test. If the effect needs to react during the game, use the actions and expressions described further down.</li>
+</ol>
+
+<h2 id="key-ideas">Key ideas</h2>
+
+<p class="note"><strong>Base value plus variation.</strong> Most properties come in pairs, such as <em>Start size</em> and <em>Start size variation</em>, or <em>Speed</em> and <em>Speed variation</em>. The first is the base value and the second is how much it randomly differs per particle. With speed 100 and variation 40, each particle gets a random speed between 60 and 140. Set the variation to 0 for identical particles.</p>
+
+<p class="note"><strong>One image, drawn in one batch.</strong> The emitter does not create Sprite objects. It draws every particle in a single mesh, which is why Capacity is the main performance setting: the mesh is built once, and particles are reused as they expire.</p>
+
+<p class="note"><strong>Tint, not colour.</strong> Tints multiply with the particle image, so they can colour an image but cannot make it brighter than the image already is. A mostly white, light image tints most predictably. The object's blend mode still applies as usual: switch the emitter to Additive to make particles glow and brighten each other. For fading particles in and out, use the Opacity group rather than the tint alpha, which is ignored.</p>
+
+<p class="note"><strong>Relative and World space.</strong> In Relative space, particles belong to the emitter: if the emitter moves or rotates, its particles go with it. In World space, particles are left behind where they were emitted, and the emitter simply stops adding new ones there. Gravity keeps pulling the same way in the layout in both cases, so sparks always fall downwards.</p>
+
+<p class="note"><strong>The emitter's own angle counts.</strong> Rotating the object in the Layout Editor rotates the emission direction, the emission area and the particles' own rotation as well. That makes it easy to aim an effect such as a muzzle flash by rotating the object.</p>
+
+<p class="note"><strong>Easing option boxes.</strong> Wherever you see an easing property, the same list is used: Linear, Ease in / out / in-out (Quad), Ease in / out / in-out (Cubic), Ease out (Back), Ease out (Bounce) and Ease out (Elastic). Linear moves at a constant rate; the others start slowly, finish slowly, overshoot, bounce or spring, and are the quickest way to make a size or speed change feel natural.</p>
+
+<p class="note"><strong>The emitter grows to fit.</strong> Particles can travel far from the emitter, so the object automatically expands its bounding box to cover them. You do not need to resize anything to stop particles being culled at the edge of the screen. This means the object's size and origin belong to the plugin while it has particles: do not animate or set the emitter's <em>Width</em>, <em>Height</em> or origin at runtime, because the plugin resets them on the next tick. Set <strong>Effect scale</strong> to size the effect instead.</p>
+
+<p class="note"><strong>Simulation is frame-rate independent.</strong> Particle motion is calculated from the time that has passed rather than per frame, so effects look the same at 30, 60 or 144 FPS.</p>
+
+<p class="note"><strong>The emission cycle.</strong> An emitter goes through a simple cycle: it starts (waiting for the <strong>Start delay</strong> first, if one is set), emits particles for as long as you ask (<strong>Emission duration</strong>, where 0 means forever), then stops. Stopping never kills particles that are already alive: they finish their own lifetime and fade out normally. Both timings follow the game's time scale, so pausing the game pauses them.</p>
+
+<p class="note"><strong>One scale for the whole effect.</strong> <em>Effect scale</em> multiplies every distance and speed in the effect at once, so a preset can be designed once and re-used at whatever size a game needs — a small firework for a handheld screen, a huge one for a boss attack. It changes only the scale, never the timing: the effect looks like the same effect, just bigger or smaller.</p>
+
+<p class="note"><strong>Timelines can animate most of the numeric properties.</strong> Emission rate, speeds, gravity, direction and spread, sizes, opacity, rotation, tints, the emission area and the timing values can all be animated with a timeline, and the Layout Editor preview follows what the timeline is doing. Structural settings cannot be animated — capacity, the object picks, and every option box, checkbox and text property — so a timeline can never put the emitter into a state it was not built for. Animated values are in the same units the properties use, and <em>Effect scale</em> still applies on top.</p>
+
+<p>Timelines can drive a property two ways: setting it outright, or offsetting it from what it currently is, which is what a timeline's <em>relative</em> tracks do. Both are supported, so keyframes work whether a track is relative or absolute, and the effect keeps running while it is animated.</p>
+
+<p class="note"><strong>Started and finished are different questions.</strong> <em>Is started</em> tells you whether the emitter is still going to produce particles, which includes its start delay and its emission duration. To ask "is anything on screen", use the <code>ActiveCount</code> expression or the <em>Has particles</em> condition, and use the <em>On all particles dead</em> trigger to know when the last one has gone.</p>
+
+<p class="note"><strong>Looping over particles.</strong> <em>For each particle</em> runs the rest of the event once for each particle that was alive when the loop started, which is how gameplay can look at individual particles. Inside the loop, <code>ParticleX</code> and <code>ParticleY</code> give the current particle's position in layout co-ordinates, ready to create an object there or measure a distance to it. Particles emitted during the loop are not included, and particles that expire or are removed during the loop are still visited, so the loop always runs as many times as it started with. <em>Remove current particle</em> deletes the particle the loop is on, which is how effects like burning away or absorbing particles are built.</p>
+
+<h2 id="properties">Properties</h2>
+
+<h3 id="properties">Properties</h3>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Image</strong></td><td>—</td><td>The image used for every particle. Click <em>Edit</em> to change it.</td></tr>
+<tr><td><strong>Effect scale</strong></td><td>1</td><td>Scales the whole effect. 2 makes it twice as large and twice as fast, 0.5 halves it.</td></tr>
+</tbody>
+</table>
+
+<p>Most numeric properties can be animated with a Construct timeline: emission rate, the emission area and its angle, lifetime, speeds and their variations, direction, spread, turn speed, gravity and its angle, drag, turbulence and its scale, tints, sizes, opacity, rotation, frame rate, spawn chance and chain decay — plus <em>Effect scale</em> itself. Capacity, object picks, and every option box, checkbox and text property cannot be animated, because changing them while the effect is running would break it.</p>
+
+<p class="note"><strong>Effect scale details:</strong> it multiplies every distance and speed — particle sizes, speeds and the end speed, the speed bump, gravity, the emission area, and the turbulence swirl size. Lifetime, emission rate, angles, opacity and the turbulence <em>percentage</em> are deliberately left alone, so a scaled effect behaves the same way, just bigger or smaller. Particle density is preserved automatically, because each particle covers more area when it gets bigger. Property values stay in their own units, so they are multiplied by this scale: a speed of 200 on a 2× effect moves particles at 400 pixels per second. Objects created by <em>Spawn object</em> and <em>Spawn on collision</em> are not scaled, since they are your objects.</p>
+
+<h3 id="emission">Emission</h3>
+
+<p>How many particles are produced, and where from.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Capacity</strong></td><td>200</td><td>Maximum number of particles alive at once. While the emitter is full, no new particles are emitted until some expire. Higher values use more memory.</td></tr>
+<tr><td><strong>Auto start</strong></td><td>Yes</td><td>Whether the emitter starts by itself. Turn it off to start it with the <em>Start</em> action instead. This is only a starting state: the <em>Restart emitter</em> action always turns emitting on again.</td></tr>
+<tr><td><strong>Emission mode</strong></td><td>Continuous</td><td>Continuous emits over time, and can be limited with the emission duration. One-shot emits the emission rate as one burst.</td></tr>
+<tr><td><strong>Emission rate</strong></td><td>30</td><td>Particles per second, or the number of particles in a one-shot burst. A one-shot burst is rounded up, so a rate below 1 still releases one particle.</td></tr>
+<tr><td><strong>Start delay</strong></td><td>0</td><td>How long the emitter waits after starting before particles appear, in seconds. 0 emits straight away. Handy for staggering repeated effects.</td></tr>
+<tr><td><strong>Emission duration</strong></td><td>0</td><td>How long the emitter keeps producing particles before it stops itself, in seconds. 0 emits forever. Ignored by one-shot emitters. With <em>Destroy when finished</em> on, this makes an effect that runs for a while and then cleans itself up.</td></tr>
+<tr><td><strong>Emission shape</strong></td><td>Point</td><td>Point emits from one spot, Circle from a disc, Box from a rectangle, Line along a line.</td></tr>
+<tr><td><strong>Circle radius</strong></td><td>0</td><td>Radius of the circle shape.</td></tr>
+<tr><td><strong>Box width</strong></td><td>0</td><td>Width of the box shape, and the length of the line shape.</td></tr>
+<tr><td><strong>Box height</strong></td><td>0</td><td>Height of the box shape.</td></tr>
+<tr><td><strong>Line angle</strong></td><td>0</td><td>Angle of the line shape in degrees. 0 points right, 90 points down.</td></tr>
+<tr><td><strong>Emit from edge</strong></td><td>No</td><td>For circle and box shapes, emit around the outline instead of filling the area. Good for rings and rectangular bursts.</td></tr>
+<tr><td><strong>Lifetime</strong></td><td>1</td><td>How long particles live, in seconds.</td></tr>
+<tr><td><strong>Lifetime variation</strong></td><td>0.4</td><td>Random amount added to or subtracted from the lifetime, in seconds.</td></tr>
+<tr><td><strong>Space</strong></td><td>Relative</td><td>Relative keeps particles attached to the emitter. World leaves them where they were emitted.</td></tr>
+</tbody>
+</table>
+
+<h3 id="movement">Movement</h3>
+
+<p>How particles move over their lifetime.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Speed</strong></td><td>100</td><td>How fast particles leave the emitter, in pixels per second.</td></tr>
+<tr><td><strong>Speed variation</strong></td><td>40</td><td>Random amount added to or subtracted from the speed.</td></tr>
+<tr><td><strong>End speed</strong></td><td>40</td><td>Speed particles reach at the end of their lifetime.</td></tr>
+<tr><td><strong>End speed variation</strong></td><td>20</td><td>Random amount added to or subtracted from the end speed.</td></tr>
+<tr><td><strong>Speed easing</strong></td><td>Linear</td><td>Curve used to blend from the speed to the end speed.</td></tr>
+<tr><td><strong>Speed bump</strong></td><td>0</td><td>Adds a smooth burst of extra speed around the middle of a particle's life without changing its start or end speed. Positive speeds up in the middle, negative slows down.</td></tr>
+<tr><td><strong>Speed bump sharpness</strong></td><td>1</td><td>How abrupt the bump is. 1 is a smooth swell, higher values make it a brief kick, lower values spread it out.</td></tr>
+<tr><td><strong>Direction mode</strong></td><td>Emitter angle</td><td>What the direction is measured from. <em>Emitter angle</em> uses one fixed direction. <em>Outwards from centre</em> and <em>Inwards to centre</em> measure from the line between the emitter and where each particle spawned, which makes ring and box shapes burst outwards or collapse inwards.</td></tr>
+<tr><td><strong>Direction</strong></td><td>0</td><td>Centre direction of emission in degrees. 0 points right, 90 points down.</td></tr>
+<tr><td><strong>Spread</strong></td><td>360</td><td>Angular range particles are spread over, in degrees. 360 emits in every direction.</td></tr>
+<tr><td><strong>Turn speed</strong></td><td>0</td><td>How fast the direction of travel rotates, in degrees per second, which curves paths into arcs and spirals. This is separate from the particle's own spinning.</td></tr>
+<tr><td><strong>Turn speed variation</strong></td><td>0</td><td>Random amount added to or subtracted from the turn speed.</td></tr>
+<tr><td><strong>Gravity</strong></td><td>100</td><td>Acceleration applied to particles, in pixels per second squared. 0 disables it.</td></tr>
+<tr><td><strong>Gravity angle</strong></td><td>90</td><td>Direction gravity pulls in degrees. 90 is straight down. Change it to use gravity as wind or as an updraft.</td></tr>
+<tr><td><strong>Drag</strong></td><td>0</td><td>How quickly particles slow down, as a proportion of their speed per second. 0 disables drag.</td></tr>
+<tr><td><strong>Turbulence</strong></td><td>0</td><td>Pushes particles along a swirling noise field, at up to this percentage of the emitter's speed. 0 disables it. Around 10 to 40 suits smoke, fire and mist; higher values look stormy. Gives a natural, organic wobble that plain gravity cannot.</td></tr>
+<tr><td><strong>Turbulence scale</strong></td><td>100</td><td>Roughly the size of the turbulence swirls in pixels. Small values give fine, choppy motion, large values give broad, sweeping curves. This changes the swirl size only, not the strength.</td></tr>
+</tbody>
+</table>
+
+<h3 id="tint">Tint</h3>
+
+<p>Tints multiply with the particle image, so they colour it but cannot brighten it.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Start tint mode</strong></td><td>Single tint</td><td><em>Single tint</em> uses the one start tint. The two multiple modes pick a start tint per particle from the tints list, which suits sparkles, confetti and debris.</td></tr>
+<tr><td><strong>Single start tint</strong></td><td>White</td><td>The tint particles start with in single tint mode, and the fallback when the tints list is empty or unreadable.</td></tr>
+<tr><td><strong>Multiple tints</strong></td><td>(empty)</td><td>Comma-separated hex colours, for example <code>#ff0000, #00ff00</code>. Repeat a colour to make it more likely. Entries that are not valid hex colours are ignored.</td></tr>
+<tr><td><strong>Animate to end tint</strong></td><td>Yes</td><td>Whether particles blend from their own start tint to the end tint. Turn it off to keep every particle at its start tint.</td></tr>
+<tr><td><strong>End tint</strong></td><td>White</td><td>The tint particles blend to by the end of their lifetime.</td></tr>
+<tr><td><strong>Tint easing</strong></td><td>Linear</td><td>Curve used to blend from the start tint to the end tint.</td></tr>
+</tbody>
+</table>
+
+<h3 id="size">Size</h3>
+
+<p>Size of particles over their lifetime, in pixels.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Start size</strong></td><td>20</td><td>Size particles are born with.</td></tr>
+<tr><td><strong>Start size variation</strong></td><td>4</td><td>Random amount added to or subtracted from the start size.</td></tr>
+<tr><td><strong>End size</strong></td><td>6</td><td>Size particles reach at the end of their lifetime.</td></tr>
+<tr><td><strong>End size variation</strong></td><td>2</td><td>Random amount added to or subtracted from the end size.</td></tr>
+<tr><td><strong>Aspect ratio</strong></td><td>1</td><td>How much wider particles are than tall. 1 is square, below 1 gives tall thin shapes like rain, above 1 gives wide flat ones.</td></tr>
+<tr><td><strong>Velocity stretch</strong></td><td>0</td><td>Lengthens particles the faster they move, measured against the emitter's own speed, so the same value looks the same at any effect scale. 0 leaves them unstretched, and the stretch stops growing once a particle is moving four times as fast as the emitter's speed. Pair it with the <em>Face movement</em> rotation mode for streaks that follow the direction of travel.</td></tr>
+<tr><td><strong>Size easing</strong></td><td>Linear</td><td>Curve used to blend from the start size to the end size.</td></tr>
+</tbody>
+</table>
+
+<h3 id="opacity">Opacity</h3>
+
+<p>How opaque particles are, and whether they fade in or out, from 0 to 1.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Opacity</strong></td><td>1</td><td>How opaque particles are for most of their life. 1 is fully solid.</td></tr>
+<tr><td><strong>Opacity variation</strong></td><td>0</td><td>Random amount added to or subtracted from the opacity, so a burst has particles of differing brightness.</td></tr>
+<tr><td><strong>Fades in</strong></td><td>No</td><td>Fade each particle in from fully transparent, which softens the start of an effect.</td></tr>
+<tr><td><strong>Fade in length</strong></td><td>20%</td><td>How much of the particle's life the fade in takes.</td></tr>
+<tr><td><strong>Fade in easing</strong></td><td>Linear</td><td>Curve of the fade in.</td></tr>
+<tr><td><strong>Fades out</strong></td><td>Yes</td><td>Fade each particle to fully transparent by the end of its life. Turn it off for particles that should stay solid until they vanish.</td></tr>
+<tr><td><strong>Fade out length</strong></td><td>100%</td><td>How much of the particle's life the fade out takes, ending at the end of the particle's life.</td></tr>
+<tr><td><strong>Fade out easing</strong></td><td>Linear</td><td>Curve of the fade out.</td></tr>
+</tbody>
+</table>
+
+<p>If the fade in and fade out lengths add up to more than 100%, they are shortened proportionally so they meet in the middle instead of overlapping.</p>
+
+<h3 id="rotation">Rotation</h3>
+
+<p>How particles are angled and how they spin.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Rotation mode</strong></td><td>Fixed</td><td><em>Fixed</em> keeps particles at their start rotation, which they can still spin from. <em>Face movement</em> points particles along the direction they are travelling, which suits sparks, arrows and debris.</td></tr>
+<tr><td><strong>Start rotation</strong></td><td>0</td><td>Angle particles are born at, in degrees. With face movement mode this is an offset from the direction of travel.</td></tr>
+<tr><td><strong>Start rotation variation</strong></td><td>0</td><td>Random amount added to or subtracted from the start rotation.</td></tr>
+<tr><td><strong>Rotation speed</strong></td><td>0</td><td>How fast particles spin, in degrees per second. Negative values spin the other way.</td></tr>
+<tr><td><strong>Rotation speed variation</strong></td><td>0</td><td>Random amount added to or subtracted from the spin.</td></tr>
+<tr><td><strong>End rotation speed</strong></td><td>0</td><td>Spin particles reach at the end of their lifetime.</td></tr>
+<tr><td><strong>End rotation speed variation</strong></td><td>0</td><td>Random amount added to or subtracted from the end spin.</td></tr>
+<tr><td><strong>Rotation speed easing</strong></td><td>Linear</td><td>Curve used to blend from the spin to the end spin.</td></tr>
+</tbody>
+</table>
+
+<h3 id="animation">Animation</h3>
+
+<p>Flip the particle image, and use a grid of frames inside it either to animate particles or to give them varied textures.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Flip image</strong></td><td>None</td><td>Mirrors the particle image for variety without extra images. The random options flip each particle independently when it spawns.</td></tr>
+<tr><td><strong>Enable atlasing</strong></td><td>No</td><td>Treats the particle image as a grid of frames instead of one image. Frames can animate, or with Fixed frame mode they simply give each particle a different texture.</td></tr>
+<tr><td><strong>Grid columns</strong></td><td>1</td><td>Number of frames across the image.</td></tr>
+<tr><td><strong>Grid rows</strong></td><td>1</td><td>Number of frames down the image.</td></tr>
+<tr><td><strong>Total frames</strong></td><td>1</td><td>Number of frames in the animation, counted left to right, then top to bottom. It cannot be more than the number of cells in the grid, so a 4 by 4 grid has at most 16 frames; a higher value is reduced to fit.</td></tr>
+<tr><td><strong>Frame rate</strong></td><td>10</td><td>Animation frames per second. Not used by Fixed frame mode.</td></tr>
+<tr><td><strong>Frame rate variation</strong></td><td>0</td><td>Random amount added to or subtracted from the frame rate, so particles animate at differing speeds instead of in lockstep.</td></tr>
+<tr><td><strong>Playback</strong></td><td>Loop</td><td><em>Fixed frame</em> keeps each particle on one frame for its whole life, which is how to use the grid for texture variations. <em>Loop</em> starts again at the end. <em>Once</em> holds the last frame until the particle expires.</td></tr>
+<tr><td><strong>Random starting frame</strong></td><td>No</td><td>Gives each particle a random frame to start from. With Fixed frame mode this gives every particle a random texture from the grid.</td></tr>
+</tbody>
+</table>
+
+<h3 id="lifecycle">Lifecycle</h3>
+
+<p>What happens where particles end their life, and when the emitter itself finishes.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Spawn object</strong></td><td>None</td><td>Object type to create where each particle dies, at the particle's position. A family can be picked instead, in which case one of its object types is chosen at random for each spawn. Useful for chain effects such as explosions leaving debris.</td></tr>
+<tr><td><strong>Spawn chance</strong></td><td>100%</td><td>Percentage of dead particles that spawn the object.</td></tr>
+<tr><td><strong>Chain decay</strong></td><td>100%</td><td>Reduces the spawn chance of emitters this one creates, so chains fade out instead of running away. Each generation multiplies the chance by this again.</td></tr>
+<tr><td><strong>Destroy when finished</strong></td><td>Yes</td><td>Destroys the emitter as soon as it stops emitting and its last particle dies, so one-off effects like impacts and explosions clean themselves up.</td></tr>
+</tbody>
+</table>
+
+<p class="note"><strong>Chain decay details:</strong> it only affects ParticlesX emitters that this emitter creates, whether on death or on collision. The first generation gets the chance multiplied once, the second twice, and so on, so 50% gives a chain of roughly seven generations and 25% roughly three. 100% is off. It only counts when a chain passes straight from one emitter to another: if a chain goes through one of your own objects in between — a puff that spawns smoke on its own death — that new emitter starts fresh at the full chance, since the plugin isn't involved in that creation.</p>
+
+<p class="note"><strong>Destroy when finished</strong> details: an emitter that has never emitted is left alone, and clearing particles never counts as finishing. Emitting manually with Auto start off does count as finishing, so turn this property off for an emitter you emit from repeatedly. Objects created by <em>Spawn object</em> are ordinary instances and are not destroyed with the emitter.</p>
+
+<h3 id="collision">Collision</h3>
+
+<p>Test particles against objects in the layout, so particles can hit things without any events. Collision is off by default and costs nothing until it is turned on.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Collision mode</strong></td><td>Disabled</td><td><em>Disabled</em> does nothing. <em>All solids</em> collides with any object that has the Solid behaviour, so it follows your layout automatically. <em>Specific object type</em> collides with the target below, which suits one-way collisions such as rain hitting water but not the ground.</td></tr>
+<tr><td><strong>Collision target</strong></td><td>None</td><td>The object type or family particles collide with, used by the <em>Specific object type</em> mode. Pick a family to collide with several kinds of object at once.</td></tr>
+<tr><td><strong>Collide across layers</strong></td><td>No</td><td>Also collide with objects on other layers, so particles can hit things you have separated onto their own layer. Costs a little more than same-layer collision, because it scans the target's instances instead of using collision cells.</td></tr>
+<tr><td><strong>Remove on collision</strong></td><td>No</td><td>Removes a particle as soon as it touches a collision target. A particle that stays inside an object is only removed once.</td></tr>
+<tr><td><strong>Spawn on collision</strong></td><td>None</td><td>Creates this object where a particle hits, such as a puff or splash. Independent of <em>Remove on collision</em>, so you can have one, the other, or both.</td></tr>
+</tbody>
+</table>
+
+<p class="note"><strong>Collision details:</strong> particles are treated as points, and the test uses each object's collision polygon, so shapes and holes are respected but the particle is a single point rather than a circle. Removing a particle this way does not create the object set in <em>Spawn object</em>, which is only for particles that expire; use <em>Spawn on collision</em> for impacts. The object is created where the particle was when it hit, which is inside the target rather than exactly on its surface.</p>
+
+<p>Because a particle is a point, a fast particle can pass through a thin object between two frames, and a particle that starts inside a solid object reports the collision as soon as it is tested. <em>All solids</em> looks for the Solid behaviour itself, so the Solid behaviour's collision filtering by instance tags is not applied: every enabled solid is a target.</p>
+
+<p class="note"><strong>About layers:</strong> by default only objects on the emitter's own layer are tested, which is what Construct does for most of its own collision checks. Turn on <em>Collide across layers</em> to test other layers too — handy when you keep things like the player and enemies on separate layers for drawing order.</p>
+
+<p>Cross-layer collision follows what you see, not layout positions. The particle is carried through draw-surface co-ordinates into the target's layer before the test, the same route Construct's own cross-layer collision takes, so layers with a different scale, parallax or scroll still collide exactly where they appear to overlap. Layers that share a transform — the usual case for layers that only organise objects — skip the conversion entirely. There is also no extra cost when the option is off, and no cost at all while collision is disabled.</p>
+
+<p>The one trade is how candidates are found: Construct's collision cells are indexed per layer, so with the option on the plugin scans the collision target's instances instead, as Construct itself does when layer transforms differ. With a very large number of instances of the target type, that scan is the part to watch.</p>
+
+<h3 id="editor-display">Editor Display</h3>
+
+<p>How much the emitter draws in the Layout Editor. This has no effect at runtime.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Mode</strong></td><td>Adaptive</td><td><em>Full</em> always draws everything: the marker, emission area, direction arrow, spread cone, representative particles, gravity arrow and a swirl badge when turbulence is on. <em>Adaptive</em> draws less as you zoom out. <em>Minimal</em> draws only the emitter marker, which suits background dressing.</td></tr>
+</tbody>
+</table>
+
+<h2 id="actions">Actions</h2>
+
+<h3 id="particlesx-emitter">ParticlesX - Emitter</h3>
+
+<table class="cols-2">
+<thead>
+<tr><th>Action</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Start</strong></td><td>Starts the emitter, including its start delay and emission duration. Does nothing if it has already started, and does not clear existing particles. Starting a one-shot emitter fires another burst.</td></tr>
+<tr><td><strong>Stop</strong></td><td>Stops the emitter. Particles already alive carry on and expire normally.</td></tr>
+<tr><td><strong>Set emission mode</strong></td><td>Sets whether the emitter emits continuously over time or fires its rate as a single burst.</td></tr>
+<tr><td><strong>Set emission rate</strong></td><td>Sets how many particles are emitted per second, or in a one-shot burst. Applies from then on.</td></tr>
+<tr><td><strong>Set start delay</strong></td><td>Sets how long the emitter waits after starting before particles appear.</td></tr>
+<tr><td><strong>Set emission duration</strong></td><td>Sets how long the emitter keeps producing particles before stopping itself.</td></tr>
+<tr><td><strong>Set lifetime</strong></td><td>Sets how long newly emitted particles live, in seconds.</td></tr>
+<tr><td><strong>Set lifetime variation</strong></td><td>Sets the random amount added to or subtracted from the lifetime of newly emitted particles.</td></tr>
+<tr><td><strong>Set emission shape</strong></td><td>Sets the area newly emitted particles are spawned across: Point, Circle, Box or Line.</td></tr>
+<tr><td><strong>Set circle radius</strong></td><td>Sets the radius of the circular emission area.</td></tr>
+<tr><td><strong>Set box width</strong></td><td>Sets the width of the box emission area, and the length of the line emission area.</td></tr>
+<tr><td><strong>Set box height</strong></td><td>Sets the height of the box emission area.</td></tr>
+<tr><td><strong>Set line angle</strong></td><td>Sets the angle of the line emission area, in degrees.</td></tr>
+<tr><td><strong>Set emit from edge</strong></td><td>Sets whether circle and box shapes emit around the outline instead of filling the area.</td></tr>
+<tr><td><strong>Set destroy when finished</strong></td><td>Sets whether the emitter destroys itself once it has stopped and its last particle has died.</td></tr>
+<tr><td><strong>Emit particles</strong></td><td>Immediately emits a burst of the given number of particles, whether or not the emitter is emitting.</td></tr>
+<tr><td><strong>Restart emitter</strong></td><td>Clears all particles and begins a new emission cycle, so the start delay, the emission duration and one-shot emission all start again. This also starts the emitter, even if <em>Auto start</em> is off and the emitter had been stopped, which is how a one-shot emitter fires again.</td></tr>
+<tr><td><strong>Clear particles</strong></td><td>Immediately removes all live particles. Clearing does not count as particles dying, so nothing spawns on death.</td></tr>
+</tbody>
+</table>
+
+<h3 id="particlesx-particle">ParticlesX - Particle</h3>
+
+<p>These affect newly emitted particles. Where noted, they also affect particles that are already alive.</p>
+
+<table class="cols-2">
+<thead>
+<tr><th>Action</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Set direction</strong></td><td>Aims newly emitted particles, in degrees.</td></tr>
+<tr><td><strong>Set direction mode</strong></td><td>Sets what the direction is measured from: the emitter's angle, or the line from the emitter to where each particle spawned.</td></tr>
+<tr><td><strong>Set spread</strong></td><td>Sets the angular range newly emitted particles are spread over.</td></tr>
+<tr><td><strong>Set speed</strong></td><td>Sets the speed newly emitted particles leave at, in pixels per second.</td></tr>
+<tr><td><strong>Set speed variation</strong></td><td>Sets the random amount added to or subtracted from the speed.</td></tr>
+<tr><td><strong>Set speed end</strong></td><td>Sets the speed newly emitted particles reach by the end of their lifetime.</td></tr>
+<tr><td><strong>Set speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end speed.</td></tr>
+<tr><td><strong>Set speed bump</strong></td><td>Sets the extra speed added around the middle of a particle's life.</td></tr>
+<tr><td><strong>Set speed bump sharpness</strong></td><td>Sets how abruptly the speed bump deviates.</td></tr>
+<tr><td><strong>Set turn speed</strong></td><td>Sets how fast the direction of travel rotates, in degrees per second.</td></tr>
+<tr><td><strong>Set turn speed variation</strong></td><td>Sets the random amount added to or subtracted from the turn speed.</td></tr>
+<tr><td><strong>Set gravity</strong></td><td>Sets the acceleration applied to particles. 0 disables it.</td></tr>
+<tr><td><strong>Set gravity direction</strong></td><td>Sets the direction gravity pulls, in degrees. 90 is straight down.</td></tr>
+<tr><td><strong>Set drag</strong></td><td>Sets how quickly particles slow down. 0 disables drag.</td></tr>
+<tr><td><strong>Set turbulence</strong></td><td>Sets the push along the local swirl, as a percentage of the emitter's speed. 0 disables turbulence.</td></tr>
+<tr><td><strong>Set turbulence scale</strong></td><td>Sets roughly how large the turbulence swirls are, in pixels.</td></tr>
+</tbody>
+</table>
+
+<h3 id="particlesx-loops">ParticlesX - Loops</h3>
+
+<p>The actions, conditions and expressions for working with individual particles. They only do anything inside a <em>For each particle</em> loop, so they are kept in their own category.</p>
+
+<table class="cols-2">
+<thead>
+<tr><th>Action</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Remove current particle</strong></td><td>Removes the particle the current <em>For each particle</em> loop is on. Does nothing outside the loop.</td></tr>
+</tbody>
+</table>
+
+<p>The loop condition itself is listed under <a href="#conditions">Conditions</a>, and <code>ParticleX</code> and <code>ParticleY</code> are listed under <a href="#expressions">Expressions</a>.</p>
+
+<h3 id="particlesx-collision">ParticlesX - Collision</h3>
+
+<p>The actions and triggers for particle collisions. The collision properties cover the common case; these let one emitter collide with several kinds of object, and let events run when a particle hits something.</p>
+
+<table class="cols-2">
+<thead>
+<tr><th>Action</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Add collision target</strong></td><td>Tests particles against another object type or family, with its own across-layers and remove-on-collision options. Targets added this way work alongside the Collision properties and stay until they are removed.</td></tr>
+<tr><td><strong>Add collision target with spawn</strong></td><td>The same, and also creates an object where a particle hits this target. It is a separate action because an object parameter cannot be left empty.</td></tr>
+<tr><td><strong>Remove collision target</strong></td><td>Stops colliding with one object type or family that was added by the actions, which is how a shared emitter gets re-armed without clearing everything. Targets set in the Collision properties are not affected.</td></tr>
+<tr><td><strong>Clear collision targets</strong></td><td>Removes every target added with <em>Add collision target</em>. Targets set in the Collision properties are not affected.</td></tr>
+</tbody>
+</table>
+
+<p>The two collision triggers are listed under <a href="#triggers">Triggers</a>, and <code>CollisionUID</code> is listed under <a href="#expressions">Expressions</a>. One Construct quirk is worth knowing: an object parameter in an action cannot be left empty, which is why <em>Add collision target</em> has no spawn setting and <em>Add collision target with spawn</em> does. Pick whichever matches what you need.</p>
+
+<h3 id="particlesx-appearance">ParticlesX - Appearance</h3>
+
+<p>These affect newly emitted particles, except <strong>Set rotation mode</strong> and <strong>Set atlas playback</strong>, which also change particles that are already alive, and <strong>Set atlas grid</strong>, which moves existing particles into the new grid.</p>
+
+<table class="cols-2">
+<thead>
+<tr><th>Action</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Set tint mode</strong></td><td>Sets whether particles use the single start tint or pick from the tints list.</td></tr>
+<tr><td><strong>Set tint start</strong></td><td>Sets the tint particles start with, as red, green and blue from 0 to 255. A checkbox can also switch to single tint mode, so one action is enough.</td></tr>
+<tr><td><strong>Set tint end</strong></td><td>Sets the tint particles blend to by the end of their lifetime.</td></tr>
+<tr><td><strong>Set tints</strong></td><td>Sets the list of hex colours particles pick their start tint from, and optionally the mode to use.</td></tr>
+<tr><td><strong>Set animate to end tint</strong></td><td>Turns blending to the end tint on or off for newly emitted particles.</td></tr>
+<tr><td><strong>Set size</strong></td><td>Sets the size newly emitted particles are born with, in pixels.</td></tr>
+<tr><td><strong>Set size variation</strong></td><td>Sets the random amount added to or subtracted from the start size.</td></tr>
+<tr><td><strong>Set size end</strong></td><td>Sets the size newly emitted particles reach at the end of their lifetime.</td></tr>
+<tr><td><strong>Set size end variation</strong></td><td>Sets the random amount added to or subtracted from the end size.</td></tr>
+<tr><td><strong>Set size aspect</strong></td><td>Sets how much wider particles are than tall.</td></tr>
+<tr><td><strong>Set velocity stretch</strong></td><td>Sets how much faster-moving particles are lengthened.</td></tr>
+<tr><td><strong>Set opacity</strong></td><td>Sets the opacity newly emitted particles hold for most of their life.</td></tr>
+<tr><td><strong>Set opacity variation</strong></td><td>Sets the random amount added to or subtracted from the opacity.</td></tr>
+<tr><td><strong>Set opacity fade in</strong></td><td>Turns the fade in on or off, and sets how much of the particle's life it takes.</td></tr>
+<tr><td><strong>Set opacity fade out</strong></td><td>Turns the fade out on or off, and sets how much of the particle's life it takes.</td></tr>
+<tr><td><strong>Set image flip</strong></td><td>Sets how the particle image is mirrored.</td></tr>
+<tr><td><strong>Set enable atlasing</strong></td><td>Turns using the image as a grid of frames on or off.</td></tr>
+<tr><td><strong>Set atlas grid</strong></td><td>Sets the frame grid and how many of its cells are frames. The frame count is limited to the grid, and particles already alive are moved into the new grid.</td></tr>
+<tr><td><strong>Set frame rate</strong></td><td>Sets the animation frame rate newly emitted particles animate at.</td></tr>
+<tr><td><strong>Set atlas playback</strong></td><td>Sets whether particles hold one frame, loop or hold the last frame. Affects particles already alive as well as new ones.</td></tr>
+<tr><td><strong>Set random starting frame</strong></td><td>Sets whether newly emitted particles start on a random frame.</td></tr>
+<tr><td><strong>Set frame rate variation</strong></td><td>Sets the random amount added to or subtracted from the animation frame rate.</td></tr>
+<tr><td><strong>Set rotation mode</strong></td><td>Sets whether particles keep a fixed angle or point along the direction they travel.</td></tr>
+<tr><td><strong>Set start rotation</strong></td><td>Sets the angle newly emitted particles are born at, in degrees.</td></tr>
+<tr><td><strong>Set rotation speed</strong></td><td>Sets how fast newly emitted particles spin, in degrees per second.</td></tr>
+<tr><td><strong>Set rotation variation</strong></td><td>Sets the random amount added to or subtracted from the start rotation.</td></tr>
+<tr><td><strong>Set rotation speed variation</strong></td><td>Sets the random amount added to or subtracted from the spin.</td></tr>
+<tr><td><strong>Set rotation speed end</strong></td><td>Sets the spin newly emitted particles reach by the end of their lifetime.</td></tr>
+<tr><td><strong>Set rotation speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end spin.</td></tr>
+</tbody>
+</table>
+
+<h2 id="conditions">Conditions</h2>
+
+<table class="cols-2">
+<thead>
+<tr><th>Condition</th><th>True when</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Has particles</strong></td><td>At least one particle is alive.</td></tr>
+<tr><td><strong>Is started</strong></td><td>The emitter has started and is still going to emit, which includes its start delay. Use <code>ActiveCount</code> to check whether any particles are alive.</td></tr>
+<tr><td><strong>Is at capacity</strong></td><td>The number of live particles has reached Capacity, so no more can be emitted until some expire.</td></tr>
+<tr><td><strong>For each particle</strong></td><td>Repeats the rest of the event once for each particle alive when the loop starts. Use <code>ParticleX</code> and <code>ParticleY</code> for the current particle's position, and <em>Remove current particle</em> to delete it.</td></tr>
+</tbody>
+</table>
+
+<h2 id="triggers">Triggers</h2>
+
+<table class="cols-2">
+<thead>
+<tr><th>Trigger</th><th>Fires when</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>On start</strong></td><td>The emitter is started by the <em>Start</em> action or by restarting it. The start delay begins from this moment. An emitter that starts by itself is already started when it is created, which Construct cannot report as a trigger.</td></tr>
+<tr><td><strong>On stop</strong></td><td>The emitter stops: by the <em>Stop</em> action, when a one-shot emitter releases its burst, or when the emission duration runs out. Particles already alive carry on.</td></tr>
+<tr><td><strong>On all particles dead</strong></td><td>The last live particle expires. Clearing particles does not count.</td></tr>
+<tr><td><strong>On particle collided</strong></td><td>A particle touches a collision target. Inside it, <code>ParticleX</code> and <code>ParticleY</code> give the particle's position, <code>CollisionUID</code> identifies the object that was hit, and <em>Remove current particle</em> drops the particle.</td></tr>
+<tr><td><strong>On particle collided with</strong></td><td>The same, but only for collisions with the object type or family given in the parameter. Use it to react to particular targets, such as only enemies. This trigger does <em>not</em> pick the object that was hit: follow it with <em>Pick instance by UID</em> using <code>CollisionUID</code>, otherwise the event still runs with every instance of that object type picked.</td></tr>
+<tr><td><strong>On particle dead</strong></td><td>A particle reaches the end of its life. <code>ParticleX</code> and <code>ParticleY</code> give its position, and the object set in <em>Spawn object</em> is created afterwards as usual. Particles removed by a loop, by a collision or by clearing are not dying, so they do not fire this.</td></tr>
+</tbody>
+</table>
+
+<h2 id="expressions">Expressions</h2>
+
+<table class="cols-2">
+<thead>
+<tr><th>Expression</th><th>Returns</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ParticlesX.ActiveCount</code></td><td>The number of particles alive right now.</td></tr>
+<tr><td><code>ParticlesX.Capacity</code></td><td>The maximum number of particles that can be alive at once.</td></tr>
+<tr><td><code>ParticlesX.EmissionRate</code></td><td>The current emission rate, in particles per second.</td></tr>
+<tr><td><code>ParticlesX.StartDelay</code></td><td>The current start delay, in seconds.</td></tr>
+<tr><td><code>ParticlesX.EmissionDuration</code></td><td>The current emission duration, in seconds. 0 means the emitter never stops by itself.</td></tr>
+<tr><td><code>ParticlesX.EmissionTimeLeft</code></td><td>The seconds of emission left, including a start delay still to pass. Returns -1 when there is no emission duration, and 0 once the emitter has stopped.</td></tr>
+<tr><td><code>ParticlesX.Speed</code></td><td>The current initial particle speed, in pixels per second.</td></tr>
+<tr><td><code>ParticlesX.Direction</code></td><td>The current emission direction, in degrees.</td></tr>
+<tr><td><code>ParticlesX.Gravity</code></td><td>The current gravity acceleration.</td></tr>
+<tr><td><code>ParticlesX.GravityDirection</code></td><td>The current gravity direction, in degrees. 90 points down.</td></tr>
+<tr><td><code>ParticlesX.Drag</code></td><td>The current drag amount.</td></tr>
+<tr><td><code>ParticlesX.Turbulence</code></td><td>The current turbulence push, as a percentage of the emitter's speed.</td></tr>
+<tr><td><code>ParticlesX.TurbulenceScale</code></td><td>The current turbulence swirl size, in pixels.</td></tr>
+<tr><td><code>ParticlesX.ParticleX</code></td><td>Inside a <em>For each particle</em> loop, the layout X co-ordinate of the current particle. Returns 0 outside a loop.</td></tr>
+<tr><td><code>ParticlesX.ParticleY</code></td><td>Inside a <em>For each particle</em> loop, the layout Y co-ordinate of the current particle. Returns 0 outside a loop.</td></tr>
+<tr><td><code>ParticlesX.CollisionUID</code></td><td>Inside an <em>On particle collided</em> trigger, the unique ID of the object the particle hit, ready for <em>Pick instance by UID</em>. Returns -1 otherwise.</td></tr>
+</tbody>
+</table>
+
+<h2 id="recipes">Recipes</h2>
+
+<p>Each recipe lists the properties worth changing. Anything not mentioned can stay at its default.</p>
+
+<p class="note"><strong>Impact or muzzle flash.</strong> One-shot emission mode, emission rate 30, lifetime 0.25, spread 45, speed 300, speed end 50, start size 30, end size 0, start tint pale yellow, end tint orange, fades out on. Keep <em>Destroy when finished</em> on so each impact cleans itself up, and use the <em>Restart emitter</em> action to fire it again. Rotate the object in the editor to aim it.</p>
+
+<p class="note"><strong>Smoke or mist.</strong> Emission shape Circle with a small radius, speed 30, speed variation 10, lifetime 3 to 5, start size 20, end size 90, opacity 0.35 with fades in and out, turbulence 30 with a turbulence scale of 150. Add a little upward gravity (gravity 20, gravity angle 270) for rising smoke.</p>
+
+<p class="note"><strong>Sparks or debris.</strong> Speed 300, speed end 100, gravity 600, rotation mode Face movement, velocity stretch 1 to 2, start size 6, end size 2, start tint white, end tint orange, fades out on. Turn <em>Random starting frame</em> and image flip on to stop the sparks looking identical.</p>
+
+<p class="note"><strong>Fire.</strong> Continuous emission at 60 per second, emission shape Line with a width of 30, speed 80, lifetime 1, start size 30, end size 0, start tint yellow, end tint dark red, turbulence 25, gravity angle 270 with gravity 60 to push flames upwards. Switch the object's blend mode to Additive for a glowing flame.</p>
+
+<p class="note"><strong>Rain or snow.</strong> Emission shape Box wide enough to cover the screen, direction 90, spread 0, speed 400, gravity 0 for rain (or 100 for slow snow), lifetime 2, start size 4, aspect ratio 0.2 for rain streaks, and velocity stretch for faster-looking drops.</p>
+
+<p class="note"><strong>Confetti burst.</strong> One-shot emission at 50 particles, spread 360, speed 200 to 400, gravity 500, lifetime 3, start tint mode Multiple tints (random) with a list of bright hex colours, image flip Random any, rotation speed 300 with variation 300, and a 1 to 2 frame atlas in Fixed frame mode with Random starting frame so each piece looks different.</p>
+
+<p class="note"><strong>Rescaling an existing effect.</strong> Set <em>Effect scale</em> rather than editing half a dozen properties: 2 doubles the sizes, speeds, gravity and emission area together, and 0.5 halves them. Everything else — lifetime, emission rate, angles, opacity — is untouched, so the effect reads the same. Useful when the same preset has to work at two very different sizes, for example a handheld screen and a boss attack.</p>
+
+<p class="note"><strong>Continuous trail.</strong> Auto start on, Relative space, lifetime 0.5, speed 20, spread 10, fades out on, and <em>Destroy when finished</em> turned off (a trail should keep going).</p>
+
+<p class="note"><strong>Fire-and-forget effect.</strong> A self-contained effect needs no events at all: set a start delay of 0.5, an emission duration of 3, and leave <em>Destroy when finished</em> on. The emitter waits half a second, streams for three seconds, then cleans itself up once the last particle has faded. Use the <em>Start</em> action to run the same emitter again later, for example for a damaged engine that smokes for a few seconds after each hit.</p>
+
+<p class="note"><strong>Chains that fend for themselves.</strong> To make a firework that throws off smaller bursts, set <em>Spawn object</em> to the same emitter (or another preset) with a modest <em>Spawn chance</em> — and set <em>Chain decay</em> to around 50%. Each generation of spawned emitter is half as likely to spawn again as the one before, so the effect cascades for several generations and then naturally stops, with no events and no risk of a chain that grows without end.</p>
+
+<p class="note"><strong>Particles that affect the game.</strong> Add <em>For each particle</em>, then put your own conditions and actions underneath it. For example: <em>For each particle</em> → System <em>Compare two values</em> — <code>distance(ParticlesX.ParticleX, ParticlesX.ParticleY, Player.X, Player.Y) &lt; 16</code> → Player: subtract 1 from health, and ParticlesX <em>Remove current particle</em>. The same shape covers sparks that stick to a wall, embers that light a fuse one at a time, or particles that spawn a decal where they land.</p>
+
+<p class="note"><strong>Impacts with no events at all.</strong> Set <em>Collision mode</em> to <em>All solids</em>, turn on <em>Remove on collision</em>, and set <em>Spawn on collision</em> to a puff or decal object. Sparks now die where they land and leave a mark, entirely from properties — and because <em>Destroy when finished</em> still applies, the emitter cleans itself up once the last particle is gone.</p>
+
+<p class="note"><strong>Bullet-hell particles that interact.</strong> Give the emitter a collision target for the enemies (properties, or <em>Add collision target</em> if there is more than one kind), then add an <em>On particle collided with</em> (enemies) event: <em>Pick instance by UID</em> — <code>ParticlesX.CollisionUID</code> — Enemy: subtract 1 from health, and ParticlesX <em>Remove current particle</em>. The particle is the projectile, the pattern comes from the emitter's speed, direction and spread, and nothing needs to be a Sprite. Remember that collision targets added by the action stay until they are cleared, which is how an emitter can be re-used for a different job later.</p>
+
+<h2 id="performance-tips">Performance tips</h2>
+
+<ul>
+<li><strong>Capacity is the main cost.</strong> Set it to roughly the number of particles you expect alive at once. Around 2000 particles per emitter is comfortable on desktop; a few hundred is plenty for most effects.</li>
+<li><strong>Big, overlapping, additive particles cost the most.</strong> That cost is fill rate, not particle count: it depends on how much of the screen the particles cover. If a glowing effect is slow, reduce the particle size or the emission rate before lowering capacity.</li>
+<li><strong>One emitter, one draw call.</strong> All particles from an emitter are drawn together, so a handful of emitters is cheap. Hundreds of emitters is not.</li>
+<li><strong>Turn on Destroy when finished for one-shot effects</strong> so finished emitters do not linger in memory.</li>
+<li><strong>Leave turbulence at 0 unless you need it.</strong> It is cheap, but it is the only optional feature that adds work for every particle, every frame.</li>
+<li><strong>An idle emitter costs nothing.</strong> While an emitter is not emitting and has no particles, it stops ticking until it is started or emits again, so background emitters that have finished are free to leave in the layout.</li>
+<li><strong>The object's box grows with its particles.</strong> The plugin resizes the emitter to cover the particles so they are not culled, and a bigger box means more of the layout is checked for collisions. Keep the emission area tight and Effect scale sensible rather than spreading one huge emitter over the whole layout.</li>
+</ul>
+
+<h2 id="things-to-watch-out-for">Things to watch out for</h2>
+
+<ul>
+<li><strong>Tints can only darken or colour, not brighten.</strong> If a tint seems to do nothing, the image is probably already dark. Use a light image, or Additive blending.</li>
+<li><strong>Tint alpha is ignored.</strong> Use the Opacity group to fade particles.</li>
+<li><strong>A one-shot emitter fires when it is created</strong> if Auto start is on. To fire again, use the <em>Start</em> action, <em>Restart emitter</em> or <em>Emit particles</em>.</li>
+<li><strong>Clearing is not dying.</strong> <em>Clear particles</em> never triggers <em>On all particles dead</em> and never spawns objects.</li>
+<li><strong>On stop fires as soon as the emitter stops</strong>, not when the screen is clear. Use <em>On all particles dead</em> when you need the moment the last particle has gone.</li>
+<li><strong>A particle loop is a snapshot.</strong> <em>For each particle</em> visits only the particles that were alive when it started, and keeps visiting them even if something removes one mid-loop. The order of particles in the loop is not meaningful.</li>
+<li><strong>Removing a particle is not dying, but it still counts as the emitter running out.</strong> <em>Remove current particle</em>, <em>Remove on collision</em> and particle expiry never create the object set in <em>Spawn object</em> — that is only for particles that expire, and collisions have their own <em>Spawn on collision</em>. All of them, though, leave the emitter reporting <em>On all particles dead</em> and <em>Destroy when finished</em> normally. <em>Clear particles</em> is the exception: it is deliberate, so it never counts as finishing.</li>
+<li><strong>Collision triggers can run many times in one frame</strong>, once per particle that hits something. That is what makes bullet-hell patterns possible without Sprites, but keep the events inside them light when many particles are colliding at once. A particle that stays inside an object reports one collision, not one per frame.</li>
+<li><strong>On particle dead runs once per particle that expires</strong>, which with a high emission rate is a lot of events. It's there for full customisation — spawning your own objects, recording where particles fell, and so on — but <em>Spawn object</em> handles the common case without any events at all.</li>
+<li><strong>Cross-layer collisions follow what you see.</strong> With <em>Collide across layers</em> on, particles collide with objects where they appear, including on layers with a different scale or parallax. The trade is that it scans the target's instances each frame rather than using collision cells.</li>
+<li><strong>Effect scale multiplies property values, it does not replace them.</strong> Setting speed 200 on a 2× effect gives 400 pixels per second, and the <em>Speed</em> expression still reports 200. It also does not scale objects you spawn on death or on collision.</li>
+<li><strong>Particles are 2D.</strong> In a 3D scene they are drawn as flat quads, so they behave like Sprite objects and do not turn to face the camera.</li>
+<li><strong>The emitter's size and origin belong to the plugin while it has particles.</strong> The object is resized and its origin moved every tick so the bounding box covers the particles, and it is restored to the size you gave it once they have gone. Do not animate the emitter's <em>Width</em>, <em>Height</em> or origin, and do not rely on <code>GetBoundingBox</code> or <em>Is on screen</em> to describe the effect: use <strong>Effect scale</strong> to size the effect instead.</li>
+<li><strong>The instance opacity applies to the particles.</strong> Setting the emitter's <em>Opacity</em>, or changing it in a script, scales the opacity of every particle, on top of the Opacity group's own settings.</li>
+<li><strong>The instance time scale applies to the particles.</strong> Setting <em>Time scale</em> on the emitter, or in a script, slows, speeds up or pauses its particles along with its emission timings. Use it to pause one effect without pausing the game.</li>
+<li><strong>An object set in On particle collided with is not picked.</strong> See that trigger above: pair it with <em>Pick instance by UID</em> and <code>CollisionUID</code>, or the event will run with every instance of that object type still picked.</li>
+<li><strong>All solids ignores Solid collision filtering.</strong> <em>All solids</em> finds the Solid behaviour itself, so every enabled solid is a collision target regardless of the behaviour's tag filtering. Use <em>Specific object type</em> when you need to be picky.</li>
+<li><strong>Savegames restore the emitter's settings, not its particles.</strong> Loading a save keeps the rate, tints, gravity, collision targets and emission cycle that were set at runtime, so a spent one-shot stays spent and a stopped emitter stays stopped. The particles themselves are not saved: the effect simply continues with those settings, which is what one would expect of a transient visual.</li>
+</ul>
+	</main>
+</div>
+
+<footer class="site-footer">
+	<div class="footer-inner">
+		<p>ParticlesX &mdash; a batched particle emitter for Construct 3.</p>
+		<p><a href="#top">Back to top</a></p>
+	</div>
+</footer>
+
+<script>
+{
+	const toggle = document.querySelector(".nav-toggle");
+	const sidebar = document.getElementById("sidebar");
+
+	toggle.addEventListener("click", () =>
+	{
+		const open = sidebar.classList.toggle("open");
+		toggle.setAttribute("aria-expanded", open ? "true" : "false");
+	});
+
+	sidebar.addEventListener("click", event =>
+	{
+		if (event.target.tagName === "A")
+		{
+			sidebar.classList.remove("open");
+			toggle.setAttribute("aria-expanded", "false");
+		}
+	});
+
+	// Highlights the section being read, and only while it is on screen.
+	const links = new Map();
+	for (const link of document.querySelectorAll(".nav-list a"))
+		links.set(link.getAttribute("href").slice(1), link);
+
+	const headings = [...document.querySelectorAll("main h2, main h3")];
+	let ticking = false;
+
+	function highlight()
+	{
+		ticking = false;
+		let current = headings[0];
+
+		for (const heading of headings)
+		{
+			if (heading.getBoundingClientRect().top <= 120)
+				current = heading;
+		}
+
+		for (const link of links.values())
+			link.classList.remove("active");
+
+		const active = current && links.get(current.id);
+		if (active)
+			active.classList.add("active");
+	}
+
+	window.addEventListener("scroll", () =>
+	{
+		if (!ticking)
+		{
+			ticking = true;
+			window.requestAnimationFrame(highlight);
+		}
+	}, { passive: true });
+
+	highlight();
+}
+</script>
+
+</body>
+</html>
