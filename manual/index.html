@@ -607,16 +607,17 @@ td code
 				</ul></li>
 				<li class="nav-section"><a href="#properties">Properties</a><ul>
 				<li><a href="#properties">Properties</a></li>
-				<li><a href="#emission">Emission</a></li>
-				<li><a href="#movement">Movement</a></li>
-				<li><a href="#tint">Tint</a></li>
-				<li><a href="#size">Size</a></li>
-				<li><a href="#opacity">Opacity</a></li>
-				<li><a href="#rotation">Rotation</a></li>
-				<li><a href="#animation">Animation</a></li>
-				<li><a href="#lifecycle">Lifecycle</a></li>
-				<li><a href="#collision">Collision</a></li>
+				<li><a href="#particle-emission">Particle Emission</a></li>
+				<li><a href="#particle-movement">Particle Movement</a></li>
+				<li><a href="#particle-tint">Particle Tint</a></li>
+				<li><a href="#particle-size">Particle Size</a></li>
+				<li><a href="#particle-opacity">Particle Opacity</a></li>
+				<li><a href="#particle-rotation">Particle Rotation</a></li>
+				<li><a href="#particle-animation">Particle Animation</a></li>
+				<li><a href="#particle-lifecycle">Particle Lifecycle</a></li>
+				<li><a href="#particle-collision">Particle Collision</a></li>
 				<li><a href="#editor-display">Editor Display</a></li>
+				<li><a href="#preset">Preset</a></li>
 				</ul></li>
 				<li class="nav-section"><a href="#actions">Actions</a><ul>
 				<li><a href="#particlesx-emitter">ParticlesX - Emitter</a></li>
@@ -653,8 +654,8 @@ td code
 <h2 id="getting-started">Getting started</h2>
 
 <ol>
-<li>Insert <strong>ParticlesX</strong> into a layout from the General category. The object itself is invisible; you only see its particles.</li>
-<li>In the Properties bar, click <strong>Image → Edit</strong> to pick the particle image. A soft round dot works for almost everything, and <strong>Effect scale</strong> is worth knowing about early: it sizes the whole effect in one number.</li>
+<li>Insert <strong>ParticlesX</strong> into a layout from the General category. The object itself is invisible; you only see its particles. It comes with a soft round dot as its default image, so it already looks like an effect as soon as it is placed.</li>
+<li>In the Properties bar, click <strong>Image → Edit</strong> to replace that image with your own. A soft round dot works for almost everything, and <strong>Effect scale</strong> is worth knowing about early: it sizes the whole effect in one number.</li>
 <li>Set <strong>Capacity</strong>, <strong>Emission rate</strong> and <strong>Lifetime</strong> first. The rest already has usable values.</li>
 <li>In the Layout Editor, the emitter draws a small preview of where particles come from, which way they travel and how far they spread. It is a diagram, not a simulation, and it costs nothing at runtime.</li>
 <li>Press Preview to test. If the effect needs to react during the game, use the actions and expressions described further down.</li>
@@ -666,7 +667,7 @@ td code
 
 <p class="note"><strong>One image, drawn in one batch.</strong> The emitter does not create Sprite objects. It draws every particle in a single mesh, which is why Capacity is the main performance setting: the mesh is built once, and particles are reused as they expire.</p>
 
-<p class="note"><strong>Tint, not colour.</strong> Tints multiply with the particle image, so they can colour an image but cannot make it brighter than the image already is. A mostly white, light image tints most predictably. The object's blend mode still applies as usual: switch the emitter to Additive to make particles glow and brighten each other. For fading particles in and out, use the Opacity group rather than the tint alpha, which is ignored.</p>
+<p class="note"><strong>Tint, not colour.</strong> Tints multiply with the particle image, so they can colour an image but cannot make it brighter than the image already is. A mostly white, light image tints most predictably. The object's blend mode still applies as usual: switch the emitter to Additive to make particles glow and brighten each other. For fading particles in and out, use the Particle Opacity group rather than the tint alpha, which is ignored.</p>
 
 <p class="note"><strong>Relative and World space.</strong> In Relative space, particles belong to the emitter: if the emitter moves or rotates, its particles go with it. In World space, particles are left behind where they were emitted, and the emitter simply stops adding new ones there. Gravity keeps pulling the same way in the layout in both cases, so sparks always fall downwards.</p>
 
@@ -699,7 +700,7 @@ td code
 <tr><th>Property</th><th>Default</th><th>What it does</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Image</strong></td><td>—</td><td>The image used for every particle. Click <em>Edit</em> to change it.</td></tr>
+<tr><td><strong>Image</strong></td><td>Soft round dot</td><td>The image used for every particle. Click <em>Edit</em> to change it. The default is a 128×128 white radial gradient with transparent padding, so a particle's visible glow is about 70% of its <strong>Start size</strong> — set Start size around 1.4 times the glow you want.</td></tr>
 <tr><td><strong>Effect scale</strong></td><td>1</td><td>Scales the whole effect. 2 makes it twice as large and twice as fast, 0.5 halves it.</td></tr>
 </tbody>
 </table>
@@ -708,7 +709,7 @@ td code
 
 <p class="note"><strong>Effect scale details:</strong> it multiplies every distance and speed — particle sizes, speeds and the end speed, the speed bump, gravity, the emission area, and the turbulence swirl size. Lifetime, emission rate, angles, opacity and the turbulence <em>percentage</em> are deliberately left alone, so a scaled effect behaves the same way, just bigger or smaller. Particle density is preserved automatically, because each particle covers more area when it gets bigger. Property values stay in their own units, so they are multiplied by this scale: a speed of 200 on a 2× effect moves particles at 400 pixels per second. Objects created by <em>Spawn object</em> and <em>Spawn on collision</em> are not scaled, since they are your objects.</p>
 
-<h3 id="emission">Emission</h3>
+<h3 id="particle-emission">Particle Emission</h3>
 
 <p>How many particles are produced, and where from.</p>
 
@@ -735,7 +736,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="movement">Movement</h3>
+<h3 id="particle-movement">Particle Movement</h3>
 
 <p>How particles move over their lifetime.</p>
 
@@ -764,7 +765,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="tint">Tint</h3>
+<h3 id="particle-tint">Particle Tint</h3>
 
 <p>Tints multiply with the particle image, so they colour it but cannot brighten it.</p>
 
@@ -782,7 +783,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="size">Size</h3>
+<h3 id="particle-size">Particle Size</h3>
 
 <p>Size of particles over their lifetime, in pixels.</p>
 
@@ -801,7 +802,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="opacity">Opacity</h3>
+<h3 id="particle-opacity">Particle Opacity</h3>
 
 <p>How opaque particles are, and whether they fade in or out, from 0 to 1.</p>
 
@@ -823,7 +824,7 @@ td code
 
 <p>If the fade in and fade out lengths add up to more than 100%, they are shortened proportionally so they meet in the middle instead of overlapping.</p>
 
-<h3 id="rotation">Rotation</h3>
+<h3 id="particle-rotation">Particle Rotation</h3>
 
 <p>How particles are angled and how they spin.</p>
 
@@ -843,7 +844,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="animation">Animation</h3>
+<h3 id="particle-animation">Particle Animation</h3>
 
 <p>Flip the particle image, and use a grid of frames inside it either to animate particles or to give them varied textures.</p>
 
@@ -864,7 +865,7 @@ td code
 </tbody>
 </table>
 
-<h3 id="lifecycle">Lifecycle</h3>
+<h3 id="particle-lifecycle">Particle Lifecycle</h3>
 
 <p>What happens where particles end their life, and when the emitter itself finishes.</p>
 
@@ -884,7 +885,7 @@ td code
 
 <p class="note"><strong>Destroy when finished</strong> details: an emitter that has never emitted is left alone, and clearing particles never counts as finishing. Emitting manually with Auto start off does count as finishing, so turn this property off for an emitter you emit from repeatedly. Objects created by <em>Spawn object</em> are ordinary instances and are not destroyed with the emitter.</p>
 
-<h3 id="collision">Collision</h3>
+<h3 id="particle-collision">Particle Collision</h3>
 
 <p>Test particles against objects in the layout, so particles can hit things without any events. Collision is off by default and costs nothing until it is turned on.</p>
 
@@ -923,6 +924,32 @@ td code
 <tr><td><strong>Mode</strong></td><td>Adaptive</td><td><em>Full</em> always draws everything: the marker, emission area, direction arrow, spread cone, representative particles, gravity arrow and a swirl badge when turbulence is on. <em>Adaptive</em> draws less as you zoom out. <em>Minimal</em> draws only the emitter marker, which suits background dressing.</td></tr>
 </tbody>
 </table>
+
+<p>The display also follows the instance's own <strong>Opacity</strong>, <strong>Colour</strong> and <strong>Blend mode</strong>, and the representative particles show a single frame when <strong>Enable atlasing</strong> is on, so the preview matches one particle rather than the whole image sheet.</p>
+
+<h3 id="preset">Preset</h3>
+
+<p>Two links for moving a whole configuration in and out of an instance as JSON. Handy for sharing settings as text, and for pasting the presets that ship with ParticlesX.</p>
+
+<table class="cols-3">
+<thead>
+<tr><th>Property</th><th>Default</th><th>What it does</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Import preset JSON</strong></td><td>—</td><td>Click <strong>Paste</strong>, paste the JSON and click OK. Every value that matches a property is applied to this instance, then a summary reports how many values were applied, anything the editor adjusted to fit a property's range, and anything it ignored. A preset can carry emission, movement, tint, size, opacity, rotation, animation, lifecycle and collision values, plus the instance's Blend mode.</td></tr>
+<tr><td><strong>Copy preset JSON</strong></td><td>—</td><td>Click <strong>Copy</strong> to put this instance's current settings on the clipboard as preset JSON, ready to paste into another instance, a preset file, or a text editor.</td></tr>
+</tbody>
+</table>
+
+<p>A preset is a plain JSON object of property names to values:</p>
+
+<p>``<code>json { "emission-shape": 1, "shape-radius": 32, "speed": 159, "tint-start": "#c2d1f4", "blend": 1 } </code>``</p>
+
+<p>Numbers and true/false are written as they are. Dropdowns can be written either as the <strong>item number</strong> (counting from 0, which is what Copy and the preset files use) or as the <strong>item text</strong> in quotes, for example <code>"emission-shape": "Circle"</code>. Colours are <code>"#rrggbb"</code> strings. <code>blend</code> is the instance's own Blend mode: <code>0</code> is Normal and <code>1</code> is Additive.</p>
+
+<p>Names this version does not recognise, values that do not fit their property, and the three <strong>Spawn object</strong> properties are ignored rather than guessed at, and the summary says so. Nothing in a preset is applied until you click OK, and properties you leave out keep their current values.</p>
+
+<p>Values that already match are left alone, so pasting the same preset twice changes nothing. Each property that does change is added to the undo history, which means <strong>Ctrl+Z steps back through an import one property at a time</strong> — the same granularity as editing the properties by hand. Construct's addon API can only create undo points one property at a time, so a large preset takes several presses to undo. If that matters, copy the preset out with <strong>Copy preset JSON</strong> before importing over an effect you care about.</p>
 
 <h2 id="actions">Actions</h2>
 
@@ -963,22 +990,22 @@ td code
 <tr><th>Action</th><th>What it does</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Set direction</strong></td><td>Aims newly emitted particles, in degrees.</td></tr>
-<tr><td><strong>Set direction mode</strong></td><td>Sets what the direction is measured from: the emitter's angle, or the line from the emitter to where each particle spawned.</td></tr>
-<tr><td><strong>Set spread</strong></td><td>Sets the angular range newly emitted particles are spread over.</td></tr>
-<tr><td><strong>Set speed</strong></td><td>Sets the speed newly emitted particles leave at, in pixels per second.</td></tr>
-<tr><td><strong>Set speed variation</strong></td><td>Sets the random amount added to or subtracted from the speed.</td></tr>
-<tr><td><strong>Set speed end</strong></td><td>Sets the speed newly emitted particles reach by the end of their lifetime.</td></tr>
-<tr><td><strong>Set speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end speed.</td></tr>
-<tr><td><strong>Set speed bump</strong></td><td>Sets the extra speed added around the middle of a particle's life.</td></tr>
-<tr><td><strong>Set speed bump sharpness</strong></td><td>Sets how abruptly the speed bump deviates.</td></tr>
-<tr><td><strong>Set turn speed</strong></td><td>Sets how fast the direction of travel rotates, in degrees per second.</td></tr>
-<tr><td><strong>Set turn speed variation</strong></td><td>Sets the random amount added to or subtracted from the turn speed.</td></tr>
-<tr><td><strong>Set gravity</strong></td><td>Sets the acceleration applied to particles. 0 disables it.</td></tr>
-<tr><td><strong>Set gravity direction</strong></td><td>Sets the direction gravity pulls, in degrees. 90 is straight down.</td></tr>
-<tr><td><strong>Set drag</strong></td><td>Sets how quickly particles slow down. 0 disables drag.</td></tr>
-<tr><td><strong>Set turbulence</strong></td><td>Sets the push along the local swirl, as a percentage of the emitter's speed. 0 disables turbulence.</td></tr>
-<tr><td><strong>Set turbulence scale</strong></td><td>Sets roughly how large the turbulence swirls are, in pixels.</td></tr>
+<tr><td><strong>Set particle direction</strong></td><td>Aims newly emitted particles, in degrees.</td></tr>
+<tr><td><strong>Set particle direction mode</strong></td><td>Sets what the direction is measured from: the emitter's angle, or the line from the emitter to where each particle spawned.</td></tr>
+<tr><td><strong>Set particle spread</strong></td><td>Sets the angular range newly emitted particles are spread over.</td></tr>
+<tr><td><strong>Set particle speed</strong></td><td>Sets the speed newly emitted particles leave at, in pixels per second.</td></tr>
+<tr><td><strong>Set particle speed variation</strong></td><td>Sets the random amount added to or subtracted from the speed.</td></tr>
+<tr><td><strong>Set particle speed end</strong></td><td>Sets the speed newly emitted particles reach by the end of their lifetime.</td></tr>
+<tr><td><strong>Set particle speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end speed.</td></tr>
+<tr><td><strong>Set particle speed bump</strong></td><td>Sets the extra speed added around the middle of a particle's life.</td></tr>
+<tr><td><strong>Set particle speed bump sharpness</strong></td><td>Sets how abruptly the speed bump deviates.</td></tr>
+<tr><td><strong>Set particle turn speed</strong></td><td>Sets how fast the direction of travel rotates, in degrees per second.</td></tr>
+<tr><td><strong>Set particle turn speed variation</strong></td><td>Sets the random amount added to or subtracted from the turn speed.</td></tr>
+<tr><td><strong>Set particle gravity</strong></td><td>Sets the acceleration applied to particles. 0 disables it.</td></tr>
+<tr><td><strong>Set particle gravity direction</strong></td><td>Sets the direction gravity pulls, in degrees. 90 is straight down.</td></tr>
+<tr><td><strong>Set particle drag</strong></td><td>Sets how quickly particles slow down. 0 disables drag.</td></tr>
+<tr><td><strong>Set particle turbulence</strong></td><td>Sets the push along the local swirl, as a percentage of the emitter's speed. 0 disables turbulence.</td></tr>
+<tr><td><strong>Set particle turbulence scale</strong></td><td>Sets roughly how large the turbulence swirls are, in pixels.</td></tr>
 </tbody>
 </table>
 
@@ -1017,42 +1044,42 @@ td code
 
 <h3 id="particlesx-appearance">ParticlesX - Appearance</h3>
 
-<p>These affect newly emitted particles, except <strong>Set rotation mode</strong> and <strong>Set atlas playback</strong>, which also change particles that are already alive, and <strong>Set atlas grid</strong>, which moves existing particles into the new grid.</p>
+<p>These affect newly emitted particles, except <strong>Set particle rotation mode</strong> and <strong>Set atlas playback</strong>, which also change particles that are already alive, and <strong>Set atlas grid</strong>, which moves existing particles into the new grid.</p>
 
 <table class="cols-2">
 <thead>
 <tr><th>Action</th><th>What it does</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Set tint mode</strong></td><td>Sets whether particles use the single start tint or pick from the tints list.</td></tr>
-<tr><td><strong>Set tint start</strong></td><td>Sets the tint particles start with, as red, green and blue from 0 to 255. A checkbox can also switch to single tint mode, so one action is enough.</td></tr>
-<tr><td><strong>Set tint end</strong></td><td>Sets the tint particles blend to by the end of their lifetime.</td></tr>
-<tr><td><strong>Set tints</strong></td><td>Sets the list of hex colours particles pick their start tint from, and optionally the mode to use.</td></tr>
-<tr><td><strong>Set animate to end tint</strong></td><td>Turns blending to the end tint on or off for newly emitted particles.</td></tr>
-<tr><td><strong>Set size</strong></td><td>Sets the size newly emitted particles are born with, in pixels.</td></tr>
-<tr><td><strong>Set size variation</strong></td><td>Sets the random amount added to or subtracted from the start size.</td></tr>
-<tr><td><strong>Set size end</strong></td><td>Sets the size newly emitted particles reach at the end of their lifetime.</td></tr>
-<tr><td><strong>Set size end variation</strong></td><td>Sets the random amount added to or subtracted from the end size.</td></tr>
-<tr><td><strong>Set size aspect</strong></td><td>Sets how much wider particles are than tall.</td></tr>
-<tr><td><strong>Set velocity stretch</strong></td><td>Sets how much faster-moving particles are lengthened.</td></tr>
-<tr><td><strong>Set opacity</strong></td><td>Sets the opacity newly emitted particles hold for most of their life.</td></tr>
-<tr><td><strong>Set opacity variation</strong></td><td>Sets the random amount added to or subtracted from the opacity.</td></tr>
-<tr><td><strong>Set opacity fade in</strong></td><td>Turns the fade in on or off, and sets how much of the particle's life it takes.</td></tr>
-<tr><td><strong>Set opacity fade out</strong></td><td>Turns the fade out on or off, and sets how much of the particle's life it takes.</td></tr>
-<tr><td><strong>Set image flip</strong></td><td>Sets how the particle image is mirrored.</td></tr>
-<tr><td><strong>Set enable atlasing</strong></td><td>Turns using the image as a grid of frames on or off.</td></tr>
-<tr><td><strong>Set atlas grid</strong></td><td>Sets the frame grid and how many of its cells are frames. The frame count is limited to the grid, and particles already alive are moved into the new grid.</td></tr>
-<tr><td><strong>Set frame rate</strong></td><td>Sets the animation frame rate newly emitted particles animate at.</td></tr>
-<tr><td><strong>Set atlas playback</strong></td><td>Sets whether particles hold one frame, loop or hold the last frame. Affects particles already alive as well as new ones.</td></tr>
-<tr><td><strong>Set random starting frame</strong></td><td>Sets whether newly emitted particles start on a random frame.</td></tr>
-<tr><td><strong>Set frame rate variation</strong></td><td>Sets the random amount added to or subtracted from the animation frame rate.</td></tr>
-<tr><td><strong>Set rotation mode</strong></td><td>Sets whether particles keep a fixed angle or point along the direction they travel.</td></tr>
-<tr><td><strong>Set start rotation</strong></td><td>Sets the angle newly emitted particles are born at, in degrees.</td></tr>
-<tr><td><strong>Set rotation speed</strong></td><td>Sets how fast newly emitted particles spin, in degrees per second.</td></tr>
-<tr><td><strong>Set rotation variation</strong></td><td>Sets the random amount added to or subtracted from the start rotation.</td></tr>
-<tr><td><strong>Set rotation speed variation</strong></td><td>Sets the random amount added to or subtracted from the spin.</td></tr>
-<tr><td><strong>Set rotation speed end</strong></td><td>Sets the spin newly emitted particles reach by the end of their lifetime.</td></tr>
-<tr><td><strong>Set rotation speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end spin.</td></tr>
+<tr><td><strong>Set particle tint mode</strong></td><td>Sets whether particles use the single start tint or pick from the tints list.</td></tr>
+<tr><td><strong>Set particle tint start</strong></td><td>Sets the tint particles start with, as red, green and blue from 0 to 255. A checkbox can also switch to single tint mode, so one action is enough.</td></tr>
+<tr><td><strong>Set particle tint end</strong></td><td>Sets the tint particles blend to by the end of their lifetime.</td></tr>
+<tr><td><strong>Set particle tints</strong></td><td>Sets the list of hex colours particles pick their start tint from, and optionally the mode to use.</td></tr>
+<tr><td><strong>Set particle tint animation</strong></td><td>Turns blending to the end tint on or off for newly emitted particles.</td></tr>
+<tr><td><strong>Set particle size</strong></td><td>Sets the size newly emitted particles are born with, in pixels.</td></tr>
+<tr><td><strong>Set particle size variation</strong></td><td>Sets the random amount added to or subtracted from the start size.</td></tr>
+<tr><td><strong>Set particle size end</strong></td><td>Sets the size newly emitted particles reach at the end of their lifetime.</td></tr>
+<tr><td><strong>Set particle size end variation</strong></td><td>Sets the random amount added to or subtracted from the end size.</td></tr>
+<tr><td><strong>Set particle size aspect</strong></td><td>Sets how much wider particles are than tall.</td></tr>
+<tr><td><strong>Set particle velocity stretch</strong></td><td>Sets how much faster-moving particles are lengthened.</td></tr>
+<tr><td><strong>Set particle opacity</strong></td><td>Sets the opacity newly emitted particles hold for most of their life.</td></tr>
+<tr><td><strong>Set particle opacity variation</strong></td><td>Sets the random amount added to or subtracted from the opacity.</td></tr>
+<tr><td><strong>Set particle opacity fade in</strong></td><td>Turns the fade in on or off, and sets how much of the particle's life it takes.</td></tr>
+<tr><td><strong>Set particle opacity fade out</strong></td><td>Turns the fade out on or off, and sets how much of the particle's life it takes.</td></tr>
+<tr><td><strong>Set particle image flip</strong></td><td>Sets how the particle image is mirrored.</td></tr>
+<tr><td><strong>Set particle atlasing</strong></td><td>Turns using the image as a grid of frames on or off.</td></tr>
+<tr><td><strong>Set particle atlas grid</strong></td><td>Sets the frame grid and how many of its cells are frames. The frame count is limited to the grid, and particles already alive are moved into the new grid.</td></tr>
+<tr><td><strong>Set particle frame rate</strong></td><td>Sets the animation frame rate newly emitted particles animate at.</td></tr>
+<tr><td><strong>Set particle atlas playback</strong></td><td>Sets whether particles hold one frame, loop or hold the last frame. Affects particles already alive as well as new ones.</td></tr>
+<tr><td><strong>Set particle random starting frame</strong></td><td>Sets whether newly emitted particles start on a random frame.</td></tr>
+<tr><td><strong>Set particle frame rate variation</strong></td><td>Sets the random amount added to or subtracted from the animation frame rate.</td></tr>
+<tr><td><strong>Set particle rotation mode</strong></td><td>Sets whether particles keep a fixed angle or point along the direction they travel.</td></tr>
+<tr><td><strong>Set particle start rotation</strong></td><td>Sets the angle newly emitted particles are born at, in degrees.</td></tr>
+<tr><td><strong>Set particle rotation speed</strong></td><td>Sets how fast newly emitted particles spin, in degrees per second.</td></tr>
+<tr><td><strong>Set particle rotation variation</strong></td><td>Sets the random amount added to or subtracted from the start rotation.</td></tr>
+<tr><td><strong>Set particle rotation speed variation</strong></td><td>Sets the random amount added to or subtracted from the spin.</td></tr>
+<tr><td><strong>Set particle rotation speed end</strong></td><td>Sets the spin newly emitted particles reach by the end of their lifetime.</td></tr>
+<tr><td><strong>Set particle rotation speed end variation</strong></td><td>Sets the random amount added to or subtracted from the end spin.</td></tr>
 </tbody>
 </table>
 
@@ -1158,7 +1185,7 @@ td code
 
 <ul>
 <li><strong>Tints can only darken or colour, not brighten.</strong> If a tint seems to do nothing, the image is probably already dark. Use a light image, or Additive blending.</li>
-<li><strong>Tint alpha is ignored.</strong> Use the Opacity group to fade particles.</li>
+<li><strong>Tint alpha is ignored.</strong> Use the Particle Opacity group to fade particles.</li>
 <li><strong>A one-shot emitter fires when it is created</strong> if Auto start is on. To fire again, use the <em>Start</em> action, <em>Restart emitter</em> or <em>Emit particles</em>.</li>
 <li><strong>Clearing is not dying.</strong> <em>Clear particles</em> never triggers <em>On all particles dead</em> and never spawns objects.</li>
 <li><strong>On stop fires as soon as the emitter stops</strong>, not when the screen is clear. Use <em>On all particles dead</em> when you need the moment the last particle has gone.</li>
